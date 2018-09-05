@@ -1,8 +1,8 @@
 <template>
 		<main class="cart_box">
-		    <div class="cart_tip clearfix">
+		    <div class="cart_tip clearfix" v-if="ok">
 		        <span>登录后可同步电脑与手机购物车中的商品</span>
-		        <a href="#" class="login">登录</a>
+		        <router-link to="mine" class="login">登陆</router-link>
 		    </div>
 		    <div class="cart_content clearfix" v-for="item in cartDatas">
 		        <div class="cart_shop clearfix">
@@ -64,10 +64,12 @@
 		data(){
 			return{
 				cartDatas:[],
+				ok: true,
 			}
 		},
 		mounted(){
-			this.getCartDatas()
+			this.getCartDatas(),
+			this.getUDatas()
 		},
 		methods:{
 			getCartDatas(){
@@ -77,6 +79,28 @@
 				},(err)=>{
 					console.log(err);
 				})
+			},
+			getUDatas(){
+				let _this = this;
+				let uObj ={};
+				if(window.sessionStorage.userInfo){
+					let uObj = JSON.parse(window.sessionStorage.userInfo);
+					let useId = uObj.user_id;
+					_this.$http.get('/userinfo',{
+						params:{
+							uId:useId
+						}
+					}).then((res)=>{
+						_this.ok = false;
+						console.log(_this.uInfs);
+					},(err)=>{
+						console.log(err);
+					});
+				}else{
+					_this.$router.push({
+						path:'/login',
+					})
+				}
 			}
 		}
 	}

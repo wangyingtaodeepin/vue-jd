@@ -1,10 +1,10 @@
-const express = require('express');
+﻿const express = require('express');
 const mysql = require('mysql');
 const common = require('../libs/common');
 const db = mysql.createPool({
     host: 'localhost',
     user: 'root',
-    password: 'huangche201314',
+    password: '123456',
     database: 'myigou'
 });
 module.exports = () => {
